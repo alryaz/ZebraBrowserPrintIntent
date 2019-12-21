@@ -17,5 +17,5 @@ public class PCIntentsBaseSettings
     A time out, in case we don't receive an answer
     from PrintConnect
      */
-    public long mTimeOutMS = 5000;
+    public long mTimeOutMS = 10000;
 }
