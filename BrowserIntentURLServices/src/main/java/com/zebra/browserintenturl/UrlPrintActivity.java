@@ -33,6 +33,17 @@ public class UrlPrintActivity extends Activity {
     private QUIT_MODE quit_mode = QUIT_MODE.FINISH_AFFINITY;
     private String componentName  ="";
 
+    // ResultCodes
+    public static final int PC_SUCCESS = 0;
+    public static final int PC_NO_PRINTER_SELECTED = 1;
+    public static final int PC_CONNECTION_ERROR = 2;
+    public static final int PC_TEMPLATE_READ_ERROR = 3;
+    public static final int PC_UNRECOVERABLE_ERROR = 4;
+    public static final int PC_GRAPHIC_READ_ERROR = 5;
+    public static final int PC_ILLEGAL_ARGUMENT_ERROR = 6;
+    public static final int PC_CLOUD_ACCESS_ERROR = 7;
+    public static final int PC_UNSUPPORTED_GRAPHIC_TYPE_ERROR = 8;
+
     private enum QUIT_MODE
     {
         FINISH_AFFINITY,
@@ -681,7 +692,7 @@ public class UrlPrintActivity extends Activity {
 
     private void showMesageAndQuit(String message)
     {
-        showMessage(message, true, 100);
+        showMessage(message, true, 200);
     }
 
     private void showMessage(final String message, boolean quit, int sleepTime)
@@ -754,12 +765,42 @@ public class UrlPrintActivity extends Activity {
         templateStringPrint.execute(settings, new PCTemplateStringPrint.onPrintTemplateStringResult() {
             @Override
             public void success(PCTemplateStringPrintSettings settings) {
-                showMesageAndQuit("Template print string succeeded");
+                showMesageAndQuit("Successfully printed!");
             }
 
             @Override
             public void error(String errorMessage, int resultCode, Bundle resultData, PCTemplateStringPrintSettings settings) {
-                showMesageAndQuit("Error while trying to template string print: \n" + errorMessage);
+                String detail_message = "";
+
+                switch (resultCode) {
+                    case PC_NO_PRINTER_SELECTED:
+                        detail_message = "It appears that the printer is not paired. Please use the PrintConnect Applicaiton to pair first";
+                        break;
+                    case PC_CONNECTION_ERROR:
+                        detail_message = "Although we found the printer there was a connection error connecting to it";
+                        break;
+                    case PC_TEMPLATE_READ_ERROR:
+                        detail_message = "PC_TEMPLATE_READ_ERROR";
+                        break;
+                    case PC_UNRECOVERABLE_ERROR:
+                        detail_message = "PC_UNRECOVERABLE_ERROR";
+                        break;
+                    case PC_GRAPHIC_READ_ERROR:
+                        detail_message = "PC_GRAPHIC_READ_ERROR";
+                        break;
+                    case PC_ILLEGAL_ARGUMENT_ERROR:
+                        detail_message = "PC_ILLEGAL_ARGUMENT_ERROR";
+                        break;
+                    case PC_CLOUD_ACCESS_ERROR:
+                        detail_message = "PC_CLOUD_ACCESS_ERROR";
+                        break;
+                    case PC_UNSUPPORTED_GRAPHIC_TYPE_ERROR:
+                        detail_message = "PC_UNSUPPORTED_GRAPHIC_TYPE_ERROR";
+                        break;
+                    default:
+                        detail_message = "Unsupported error code " + errorMessage;
+                }
+                showMesageAndQuit("Error while trying to template string print: \n" + detail_message);
             }
 
             @Override
