@@ -1,0 +1,19 @@
+name: Build Android app
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build Android App
+        uses: sparkfabrik/android-build-action@v1.5.0
+        with:
+          project-path: .
+          output-path: zebra-browser-print-intents.apk
+          fastlane-env: "debug"
