@@ -2,7 +2,7 @@ name: Generated APK AAB (Upload - Create Artifact To Github Action)
 
 env:
   # The name of the main module repository
-  main_project_module: app
+  main_project_module: BrowserIntentURLServices
 
 on:
   push:
@@ -32,16 +32,16 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Run gradle tests
-        run: ./gradlew test
+        run: ./gradlew ${{ env.main_project_module }}:test
 
       - name: Build gradle project
-        run: ./gradlew build
+        run: ./gradlew ${{ env.main_project_module }}:build
 
       # - name: Build apk debug project (APK) - ${{ env.main_project_module }} module
       #   run: ./gradlew assembleDebug
 
       - name: Build apk release project (APK) - ${{ env.main_project_module }} module
-        run: ./gradlew assemble
+        run: ./gradlew ${{ env.main_project_module }}:assemble
 
       # - name: Build app bundle release (AAB) - ${{ env.main_project_module }} module
       #   run: ./gradlew ${{ env.main_project_module }}:bundleRelease
